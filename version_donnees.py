@@ -9,8 +9,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import LeaveOneOut
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
 from matplotlib import pyplot as plt
 from matplotlib.colors import ListedColormap
+import seaborn as sns
 
 ### Read csv file
 
@@ -80,7 +82,19 @@ def train_model(layer, tols, epochs) :
     for train, test in loo.split(data):
         clf = MLPClassifier(hidden_layer_sizes=layer, random_state=1, max_iter=epochs, tol = tols ).fit(data[train], label_target[train])
         results[test] = clf.predict(data[test])
-        print(clf.loss_curve_)
+        
+        
+    y_pred = clf.predict(data)
+    cm = confusion_matrix(label_target, y_pred)
+    print(cm)
+    sns.heatmap(cm, center=True)
+    plt.show()
+        
+
+#    y = clf.loss_curve_
+ #   x = list(range(1,len(y)+1))
+  #  plt.plot(x,y)
+
     return (accuracy_score(label_target, results)*100)
 
 
@@ -110,14 +124,15 @@ Accuracy = []
 
 for i in layer :
     Accuracy.append(train_model(i, tols[0], epochs[0]))
-
+'''
 for i in tols :
     Accuracy.append(train_model(layer[0], i, epochs[0]))
 
 for i in epochs :
     Accuracy.append(train_model(layer[0], tols[0], i))
-
+'''
 print("Each parameters tested")
+#plt.show()
 
 ### Update with GridSeachCV
 
