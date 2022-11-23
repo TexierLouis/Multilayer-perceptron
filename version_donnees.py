@@ -158,5 +158,5 @@ for train, test in loo.split(data):
 print ("Accuracy=%f%%" % (accuracy_score(label_target, results)*100))
 '''
 
-
+# early_stopping = True => allow to use validation_score_
 
