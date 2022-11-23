@@ -15,6 +15,15 @@ import seaborn as sns
 
 ### Functions
 
+'''
+Display or save an image containing the loss function, the accuracy and the heatmap of the model
+
+    Parameters:
+        clf (MLPClassifier): The trained model
+        data (array): Data of the file
+        label (array): Labels of the data
+        title (string): Title for the image containing the different parameters
+'''
 def display(clf, data, label, title):
     plt.figure(figsize=(10,10))
     plt.suptitle(title)
@@ -41,7 +50,15 @@ def display(clf, data, label, title):
     plt.savefig(f'./Desktop/IRD/Multilayer-perceptron/results/{title[:-33]}.png')
     plt.clf()
 
+'''
+Train the model depending of the input parameters
 
+    Parameters:
+        layer (array): Tuples for the number of nodes per layer and the number of intermediate layers
+        tols (array): Value of tolerance before training stop if not achieve
+        epochs (array): Number of epochs 
+
+'''
 def train_model(layer, tols, epochs) :
     loo = LeaveOneOut()
     results = np.zeros(len(data))
@@ -53,6 +70,10 @@ def train_model(layer, tols, epochs) :
     title = f"Results for {layer[1]} layers of {layer[0]} nodes, {epochs} epochs and a tol of {tols} \n Accuracy = {accuracy} %"
     display(clf, data, label_target, title)
 
+'''
+Train the model by using different parameters
+
+'''
 def train_parameters() :
     layer = [(25,1),(50,1),(25,10),(50,10)]
     tols = [10e-4, 10e-5, 10e-3, 10e-2]
@@ -65,6 +86,12 @@ def train_parameters() :
     for k in epochs :
         train_model(layer[0], tols[0], k)
 
+'''
+Search the best parameters for this estimator and the data
+
+    Returns:
+        clf.best_params_ (dict): Dictionnary with all the parameters giving the best accuracy for the model
+'''
 def search_best_parameter():
     
     layer = [(25,1),(50,1),(25,10),(50,10)]
